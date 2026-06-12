@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -23,11 +23,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
     }
 
     public function topics(): HasMany
@@ -53,5 +48,45 @@ class User extends Authenticatable
     public function sectionViews(): HasMany
     {
         return $this->hasMany(SectionView::class);
+    }
+
+    public function notes(): HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function noteTags(): HasMany
+    {
+        return $this->hasMany(NoteTag::class);
+    }
+
+    public function studyGoals(): HasMany
+    {
+        return $this->hasMany(StudyGoal::class);
+    }
+
+    public function plannedSessions(): HasMany
+    {
+        return $this->hasMany(PlannedSession::class);
+    }
+
+    public function flashcardDecks(): HasMany
+    {
+        return $this->hasMany(FlashcardDeck::class);
+    }
+
+    public function resources(): HasMany
+    {
+        return $this->hasMany(Resource::class);
+    }
+
+    public function journalEntries(): HasMany
+    {
+        return $this->hasMany(JournalEntry::class);
+    }
+
+    public function focusSessions(): HasMany
+    {
+        return $this->hasMany(FocusSession::class);
     }
 }

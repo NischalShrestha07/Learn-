@@ -2,73 +2,90 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GenerateTopicRequest;
-use App\Http\Requests\SearchTopicRequest;
-use App\Jobs\GenerateTopicContentJob;
 use App\Models\LearningSession;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
-    public function search(SearchTopicRequest $request)
+    public function index(Request $request)
     {
-        $query = $request->validated('q');
-
-        $topics = Topic::where('generation_status', 'completed')
-            ->where(function ($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
-            })
+        $topics = $request->user()->topics()
+            ->withCount('sections', 'learningSessions')
             ->latest()
-            ->paginate(15)
-            ->withQueryString();
+            ->paginate(12);
 
-        return view('topics.search', compact('topics', 'query'));
+        return view('topics.index', compact('topics'));
     }
 
-    public function show(Request $request, string $slug)
+    public function create()
     {
-        $topic = Topic::where('slug', $slug)->firstOrFail();
-
-        // Start a learning session when student opens a ready topic
-        if (auth()->check() && $topic->isReady()) {
-            LearningSession::create([
-                'user_id'    => $request->user()->id,
-                'topic_id'   => $topic->id,
-                'started_at' => now(),
-            ]);
-        }
-
-        $sections = $topic->sections;
-
-        return view('topics.show', compact('topic', 'sections'));
+        return view('topics.create');
     }
 
-    public function status(string $slug)
+    public function store(Request $request)
     {
-        $topic = Topic::where('slug', $slug)->firstOrFail();
-
-        return response()->json([
-            'ready'  => $topic->isReady(),
-            'failed' => $topic->isFailed(),
-        ]);
-    }
-
-    public function generate(GenerateTopicRequest $request)
-    {
-        $title = $request->validated('title');
-        $slug  = Topic::generateSlug($title);
-
-        $topic = Topic::create([
-            'slug'              => $slug,
-            'title'             => $title,
-            'generation_status' => 'pending',
-            'created_by'        => $request->user()->id,
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        GenerateTopicContentJob::dispatch($topic->id);
+        $topic = $request->user()->topics()->create([
+            'slug' => Topic::generateSlug($data['title']),
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'status' => 'active',
+        ]);
 
-        return redirect()->route('topics.show', $topic->slug);
+        return redirect()->route('topics.show', $topic)
+            ->with('success', 'Topic created successfully.');
+    }
+
+    public function show(Request $request, Topic $topic)
+    {
+        abort_if($topic->created_by !== $request->user()->id, 403);
+
+        // Start learning session
+        LearningSession::create([
+            'user_id' => $request->user()->id,
+            'topic_id' => $topic->id,
+            'started_at' => now(),
+        ]);
+
+        $topic->load('sections');
+
+        return view('topics.show', compact('topic'));
+    }
+
+    public function edit(Request $request, Topic $topic)
+    {
+        abort_if($topic->created_by !== $request->user()->id, 403);
+
+        return view('topics.edit', compact('topic'));
+    }
+
+    public function update(Request $request, Topic $topic)
+    {
+        abort_if($topic->created_by !== $request->user()->id, 403);
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'status' => ['required', 'in:active,archived'],
+        ]);
+
+        $topic->update($data);
+
+        return redirect()->route('topics.show', $topic)
+            ->with('success', 'Topic updated successfully.');
+    }
+
+    public function destroy(Request $request, Topic $topic)
+    {
+        abort_if($topic->created_by !== $request->user()->id, 403);
+        $topic->delete();
+
+        return redirect()->route('topics.index')
+            ->with('success', 'Topic deleted successfully.');
     }
 }

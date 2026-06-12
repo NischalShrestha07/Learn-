@@ -8,16 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable(['slug', 'title', 'description', 'generation_status', 'created_by'])]
+#[Fillable(['slug', 'title', 'description', 'status', 'created_by'])]
 class Topic extends Model
 {
-    protected function casts(): array
-    {
-        return [
-            'generation_status' => 'string',
-        ];
-    }
-
     public static function generateSlug(string $title): string
     {
         $base = Str::slug($title);
@@ -30,16 +23,6 @@ class Topic extends Model
         }
 
         return $slug;
-    }
-
-    public function isReady(): bool
-    {
-        return $this->generation_status === 'completed';
-    }
-
-    public function isFailed(): bool
-    {
-        return $this->generation_status === 'failed';
     }
 
     public function creator(): BelongsTo

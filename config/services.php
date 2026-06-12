@@ -35,10 +35,4 @@ return [
         ],
     ],
 
-    'ai' => [
-        'key'      => env('AI_API_KEY'),
-        'endpoint' => env('AI_ENDPOINT', 'https://api.anthropic.com/v1/messages'),
-        'model'    => env('AI_MODEL', 'claude-haiku-4-5-20251001'),
-    ],
-
 ];

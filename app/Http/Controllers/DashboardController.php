@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FocusSession;
 use App\Models\LearningSession;
 use App\Models\TopicProgress;
 use Illuminate\Http\Request;
@@ -25,18 +26,34 @@ class DashboardController extends Controller
             ->whereNotNull('duration_seconds')
             ->sum('duration_seconds');
 
+        $topicCount = $user->topics()->count();
+        $noteCount = $user->notes()->count();
+        $deckCount = $user->flashcardDecks()->count();
+
+        $recentNotes = $user->notes()->with('tags')->latest()->take(4)->get();
+        $recentTopics = $user->topics()->withCount('sections')->latest()->take(4)->get();
+
+        $todayFocusMinutes = FocusSession::where('user_id', $user->id)
+            ->whereDate('completed_at', Carbon::today())
+            ->sum('duration_minutes');
+
+        $activeGoals = $user->studyGoals()->where('status', 'active')->count();
+        $todaySessions = $user->plannedSessions()
+            ->whereDate('scheduled_at', Carbon::today())
+            ->where('status', 'scheduled')
+            ->count();
+
         $progressCounts = TopicProgress::where('user_id', $user->id)
             ->selectRaw('status, count(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status');
 
-        $bookmarkedTopics = $user->bookmarks()->with('topic')->latest()->take(8)->get();
+        $bookmarkedTopics = $user->bookmarks()->with('topic')->latest()->take(5)->get();
 
         return view('dashboard', compact(
-            'recentSessions',
-            'weeklySeconds',
-            'progressCounts',
-            'bookmarkedTopics',
+            'recentSessions', 'weeklySeconds', 'topicCount', 'noteCount', 'deckCount',
+            'recentNotes', 'recentTopics', 'todayFocusMinutes', 'activeGoals',
+            'todaySessions', 'progressCounts', 'bookmarkedTopics',
         ));
     }
 }

@@ -9,10 +9,8 @@ use Illuminate\Http\Request;
 
 class LearningSessionController extends Controller
 {
-    public function end(Request $request, string $slug)
+    public function end(Request $request, Topic $topic)
     {
-        $topic = Topic::where('slug', $slug)->firstOrFail();
-
         $session = LearningSession::where('user_id', $request->user()->id)
             ->where('topic_id', $topic->id)
             ->whereNull('ended_at')
@@ -21,7 +19,7 @@ class LearningSessionController extends Controller
 
         if ($session) {
             $session->update([
-                'ended_at'        => now(),
+                'ended_at' => now(),
                 'duration_seconds' => now()->diffInSeconds($session->started_at),
             ]);
 
