@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Profile') }}</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ __('Profile') }}</h2>
         </div>
     </x-slot>
 

@@ -1,164 +1,195 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Study Planner</h2>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <span class="eyebrow">Time and goals</span>
+                <h2 class="mt-3 text-2xl font-bold text-slate-950">Study Planner</h2>
+                <p class="mt-1 text-sm text-slate-500">Turn vague intentions into sessions, goals, and a weekly rhythm you can follow.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button @click="$dispatch('open-modal', 'goal-modal')" class="btn-secondary text-sm">New goal</button>
+                <button @click="$dispatch('open-modal', 'session-modal')" class="btn-primary text-sm">Plan session</button>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-
-            {{-- Weekly Progress --}}
-            <div class="card p-6">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm">This Week</h3>
+        <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
+            <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+                <div class="card p-6">
+                    <p class="section-title">This week</p>
                     @if ($weeklyGoal)
-                        <span class="text-sm text-gray-500">{{ $thisWeekMinutes }} / {{ $weeklyGoal->target_minutes }} min</span>
+                        @php $pct = min(100, round(($thisWeekMinutes / $weeklyGoal->target_minutes) * 100)); @endphp
+                        <div class="mt-4 flex items-end justify-between gap-4">
+                            <div>
+                                <p class="text-3xl font-bold text-slate-950">{{ $thisWeekMinutes }} / {{ $weeklyGoal->target_minutes }} min</p>
+                                <p class="mt-1 text-sm text-slate-500">{{ $pct }}% of your weekly goal is complete.</p>
+                            </div>
+                            <span class="badge-indigo">{{ ucfirst($weeklyGoal->goal_type) }}</span>
+                        </div>
+                        <div class="mt-5 h-3 w-full rounded-full bg-slate-200">
+                            <div class="h-3 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-800" style="width: {{ $pct }}%"></div>
+                        </div>
+                    @else
+                        <h3 class="mt-4 text-2xl font-bold text-slate-950">No weekly goal yet</h3>
+                        <p class="mt-2 text-sm text-slate-500">Set a weekly target so your study time has a clear baseline.</p>
                     @endif
                 </div>
-                @if ($weeklyGoal)
-                    @php $pct = min(100, round(($thisWeekMinutes / $weeklyGoal->target_minutes) * 100)); @endphp
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                        <div class="bg-indigo-600 h-2.5 rounded-full transition-all" style="width: {{ $pct }}%"></div>
+
+                <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+                    <div class="metric-card">
+                        <p class="section-title">Today</p>
+                        <p class="mt-3 text-3xl font-bold text-slate-950">{{ $todaySessions->count() }}</p>
+                        <p class="mt-2 text-sm text-slate-500">Sessions on today's plan.</p>
                     </div>
-                    <p class="text-xs text-gray-500 mt-1.5">{{ $pct }}% of weekly goal</p>
-                @else
-                    <p class="text-sm text-gray-500">Set a weekly goal to track your progress.</p>
-                @endif
+                    <div class="metric-card">
+                        <p class="section-title">Active goals</p>
+                        <p class="mt-3 text-3xl font-bold text-slate-950">{{ $activeGoals->count() }}</p>
+                        <p class="mt-2 text-sm text-slate-500">Ongoing targets you are working toward.</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="section-title">Upcoming</p>
+                        <p class="mt-3 text-3xl font-bold text-slate-950">{{ $upcomingSessions->count() }}</p>
+                        <p class="mt-2 text-sm text-slate-500">Scheduled sessions after today.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                {{-- Today's sessions --}}
+            <div class="grid gap-6 lg:grid-cols-2">
                 <div class="card">
                     <div class="card-header flex items-center justify-between">
-                        <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm">Today</h3>
-                        <button @click="$dispatch('open-modal', 'session-modal')" class="link text-xs">+ Plan</button>
+                        <div>
+                            <p class="section-title">Today</p>
+                            <h3 class="mt-1 text-lg font-bold text-slate-950">Planned sessions</h3>
+                        </div>
+                        <button @click="$dispatch('open-modal', 'session-modal')" class="link text-xs">Add session</button>
                     </div>
-                    <div class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                    <div class="divide-y divide-slate-200/70">
                         @forelse ($todaySessions as $session)
-                            <div class="px-6 py-3.5 flex items-center justify-between">
+                            <div class="flex items-center justify-between gap-4 px-6 py-4">
                                 <div>
-                                    <p class="font-medium text-sm text-gray-900 dark:text-gray-100">{{ $session->title }}</p>
-                                    <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($session->scheduled_at)->format('g:i A') }} · {{ $session->duration_minutes }}min</p>
+                                    <p class="text-sm font-semibold text-slate-900">{{ $session->title }}</p>
+                                    <p class="text-xs text-slate-500">{{ \Carbon\Carbon::parse($session->scheduled_at)->format('g:i A') }} · {{ $session->duration_minutes }} min</p>
                                 </div>
                                 <div class="flex gap-2">
                                     @if ($session->status === 'scheduled')
                                         <form method="POST" action="{{ route('planner.sessions.complete', $session) }}">
-                                            @csrf @method('PATCH')
-                                            <button class="text-xs text-green-600 hover:underline">Done</button>
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="text-xs font-semibold text-green-700 hover:underline">Done</button>
                                         </form>
                                         <form method="POST" action="{{ route('planner.sessions.destroy', $session) }}">
-                                            @csrf @method('DELETE')
-                                            <button class="text-xs text-red-600 hover:underline">Remove</button>
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="text-xs font-semibold text-red-600 hover:underline">Remove</button>
                                         </form>
                                     @else
-                                        <span class="text-xs badge px-2 py-0.5
-                                            @if($session->status === 'completed') badge-green
-                                            @else badge-gray @endif">
-                                            {{ $session->status }}
-                                        </span>
+                                        <span class="@if($session->status === 'completed') badge-green @else badge-gray @endif">{{ ucfirst($session->status) }}</span>
                                     @endif
                                 </div>
                             </div>
                         @empty
-                            <div class="px-6 py-8 text-center text-sm text-gray-500">No sessions planned for today.</div>
+                            <div class="px-6 py-8 text-center text-sm text-slate-500">No sessions planned for today.</div>
                         @endforelse
                     </div>
                 </div>
 
-                {{-- Goals --}}
                 <div class="card">
                     <div class="card-header flex items-center justify-between">
-                        <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm">Active Goals</h3>
-                        <button @click="$dispatch('open-modal', 'goal-modal')" class="link text-xs">+ Goal</button>
+                        <div>
+                            <p class="section-title">Goals</p>
+                            <h3 class="mt-1 text-lg font-bold text-slate-950">Active goals</h3>
+                        </div>
+                        <button @click="$dispatch('open-modal', 'goal-modal')" class="link text-xs">Add goal</button>
                     </div>
-                    <div class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                    <div class="divide-y divide-slate-200/70">
                         @forelse ($activeGoals as $goal)
                             <div class="px-6 py-4">
-                                <div class="flex items-start justify-between mb-2">
+                                <div class="mb-3 flex items-start justify-between gap-4">
                                     <div>
-                                        <p class="font-medium text-sm text-gray-900 dark:text-gray-100">{{ $goal->title }}</p>
-                                        <p class="text-xs text-gray-500">{{ ucfirst($goal->goal_type) }} · {{ $goal->current_minutes }} / {{ $goal->target_minutes }} min</p>
+                                        <p class="text-sm font-semibold text-slate-900">{{ $goal->title }}</p>
+                                        <p class="text-xs text-slate-500">{{ ucfirst($goal->goal_type) }} · {{ $goal->current_minutes }} / {{ $goal->target_minutes }} min</p>
                                     </div>
                                     <form method="POST" action="{{ route('planner.goals.complete', $goal) }}">
-                                        @csrf @method('PATCH')
-                                        <button class="text-xs text-green-600 hover:underline">Complete</button>
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="text-xs font-semibold text-green-700 hover:underline">Complete</button>
                                     </form>
                                 </div>
                                 @php $pct = $goal->progressPercent(); @endphp
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: {{ $pct }}%"></div>
+                                <div class="h-2 w-full rounded-full bg-slate-200">
+                                    <div class="h-2 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-800" style="width: {{ $pct }}%"></div>
                                 </div>
-                                <p class="text-xs text-gray-500 mt-1">{{ $pct }}%</p>
+                                <p class="mt-2 text-xs text-slate-500">{{ $pct }}% complete</p>
                             </div>
                         @empty
-                            <div class="px-6 py-8 text-center text-sm text-gray-500">No active goals.</div>
+                            <div class="px-6 py-8 text-center text-sm text-slate-500">No active goals.</div>
                         @endforelse
                     </div>
                 </div>
-
             </div>
 
-            {{-- Upcoming --}}
             <div class="card">
                 <div class="card-header">
-                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm">Upcoming Sessions</h3>
+                    <p class="section-title">Upcoming</p>
+                    <h3 class="mt-1 text-lg font-bold text-slate-950">Scheduled after today</h3>
                 </div>
-                <div class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                <div class="divide-y divide-slate-200/70">
                     @forelse ($upcomingSessions as $session)
-                        <div class="px-6 py-3.5 flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-4 px-6 py-4">
                             <div>
-                                <p class="font-medium text-sm text-gray-900 dark:text-gray-100">{{ $session->title }}</p>
-                                <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($session->scheduled_at)->format('D, M j · g:i A') }} · {{ $session->duration_minutes }}min</p>
+                                <p class="text-sm font-semibold text-slate-900">{{ $session->title }}</p>
+                                <p class="text-xs text-slate-500">{{ \Carbon\Carbon::parse($session->scheduled_at)->format('D, M j · g:i A') }} · {{ $session->duration_minutes }} min</p>
                             </div>
                             <form method="POST" action="{{ route('planner.sessions.destroy', $session) }}">
-                                @csrf @method('DELETE')
-                                <button class="text-xs text-red-600 hover:underline">Remove</button>
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-xs font-semibold text-red-600 hover:underline">Remove</button>
                             </form>
                         </div>
                     @empty
-                        <div class="px-6 py-8 text-center text-sm text-gray-500">No upcoming sessions.</div>
+                        <div class="px-6 py-8 text-center text-sm text-slate-500">No upcoming sessions.</div>
                     @endforelse
                 </div>
             </div>
 
-            {{-- Past --}}
             @if ($pastSessions->isNotEmpty())
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm">Uncompleted Sessions</h3>
-                </div>
-                <div class="divide-y divide-gray-100 dark:divide-gray-700/50">
-                    @foreach ($pastSessions as $session)
-                        <div class="px-6 py-3.5 flex items-center justify-between">
-                            <div>
-                                <p class="font-medium text-sm text-gray-900 dark:text-gray-100">{{ $session->title }}</p>
-                                <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($session->scheduled_at)->diffForHumans() }}</p>
+                <div class="card">
+                    <div class="card-header">
+                        <p class="section-title">Needs review</p>
+                        <h3 class="mt-1 text-lg font-bold text-slate-950">Uncompleted sessions</h3>
+                    </div>
+                    <div class="divide-y divide-slate-200/70">
+                        @foreach ($pastSessions as $session)
+                            <div class="flex items-center justify-between gap-4 px-6 py-4">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-900">{{ $session->title }}</p>
+                                    <p class="text-xs text-slate-500">{{ \Carbon\Carbon::parse($session->scheduled_at)->diffForHumans() }}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <form method="POST" action="{{ route('planner.sessions.complete', $session) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="text-xs font-semibold text-green-700 hover:underline">Mark done</button>
+                                    </form>
+                                    <form method="POST" action="{{ route('planner.sessions.destroy', $session) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-xs font-semibold text-red-600 hover:underline">Remove</button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="flex gap-2">
-                                <form method="POST" action="{{ route('planner.sessions.complete', $session) }}">
-                                    @csrf @method('PATCH')
-                                    <button class="text-xs text-green-600 hover:underline">Mark done</button>
-                                </form>
-                                <form method="POST" action="{{ route('planner.sessions.destroy', $session) }}">
-                                    @csrf @method('DELETE')
-                                    <button class="text-xs text-red-600 hover:underline">Remove</button>
-                                </form>
-                            </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
 
-    {{-- Goal Modal --}}
     <x-modal name="goal-modal" focusable>
-        <form method="POST" action="{{ route('planner.goals.store') }}" class="p-6 space-y-4">
+        <form method="POST" action="{{ route('planner.goals.store') }}" class="space-y-4 p-6">
             @csrf
-            <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">New Goal</h3>
+            <h3 class="text-lg font-bold text-slate-950">New goal</h3>
             <div>
                 <x-input-label for="gtitle">Title</x-input-label>
                 <input type="text" name="title" id="gtitle" required class="input">
@@ -188,16 +219,15 @@
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" @click="$dispatch('close-modal', 'goal-modal')" class="btn-secondary text-sm">Cancel</button>
-                <button type="submit" class="btn-primary text-sm">Create Goal</button>
+                <button type="submit" class="btn-primary text-sm">Create goal</button>
             </div>
         </form>
     </x-modal>
 
-    {{-- Session Modal --}}
     <x-modal name="session-modal" focusable>
-        <form method="POST" action="{{ route('planner.sessions.store') }}" class="p-6 space-y-4">
+        <form method="POST" action="{{ route('planner.sessions.store') }}" class="space-y-4 p-6">
             @csrf
-            <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Plan Session</h3>
+            <h3 class="text-lg font-bold text-slate-950">Plan session</h3>
             <div>
                 <x-input-label for="stitle">Title</x-input-label>
                 <input type="text" name="title" id="stitle" required class="input">
@@ -213,7 +243,7 @@
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <x-input-label for="scheduled_at">Date & Time</x-input-label>
+                    <x-input-label for="scheduled_at">Date and time</x-input-label>
                     <input type="datetime-local" name="scheduled_at" id="scheduled_at" required class="input">
                 </div>
                 <div>
@@ -227,7 +257,7 @@
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" @click="$dispatch('close-modal', 'session-modal')" class="btn-secondary text-sm">Cancel</button>
-                <button type="submit" class="btn-primary text-sm">Plan Session</button>
+                <button type="submit" class="btn-primary text-sm">Save session</button>
             </div>
         </form>
     </x-modal>

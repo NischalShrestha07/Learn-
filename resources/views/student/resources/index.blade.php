@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Resource Library</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Resource Library</h2>
             <button @click="$dispatch('open-modal', 'resource-modal')" class="btn-primary text-sm">+ Add Resource</button>
         </div>
     </x-slot>
@@ -34,8 +34,8 @@
                         </select>
                     </div>
                     <div class="flex items-center gap-2">
-                        <input type="checkbox" name="favourites" id="fav" value="1" @checked(request()->boolean('favourites')) class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500">
-                        <label for="fav" class="text-sm text-gray-600 dark:text-gray-400">Favourites</label>
+                        <input type="checkbox" name="favourites" id="fav" value="1" @checked(request()->boolean('favourites')) class="rounded border-slate-300 dark:border-slate-600 text-cyan-600 focus:ring-cyan-500">
+                        <label for="fav" class="text-sm text-slate-600 dark:text-slate-400">Favourites</label>
                     </div>
                     <button type="submit" class="btn-secondary text-sm">Filter</button>
                 </form>
@@ -49,24 +49,24 @@
                                 <span class="text-xs px-2 py-0.5 rounded-full font-medium
                                     @if($resource->type === 'link') bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300
                                     @elseif($resource->type === 'pdf') bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300
-                                    @elseif($resource->type === 'video') bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300
+                                    @elseif($resource->type === 'video') bg-cyan-100 dark:bg-cyan-900/40 text-cyan-800 dark:text-cyan-300
                                     @elseif($resource->type === 'book') bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300
                                     @elseif($resource->type === 'article') bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300
-                                    @else bg-gray-100 dark:bg-gray-700 text-gray-500 @endif
+                                    @else bg-slate-100 dark:bg-slate-700 text-slate-500 @endif
                                 ">{{ ucfirst($resource->type) }}</span>
                                 <form method="POST" action="{{ route('resources.favourite', $resource) }}">
                                     @csrf @method('PATCH')
-                                    <button class="text-lg {{ $resource->is_favourite ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400' }} transition">★</button>
+                                    <button class="text-lg {{ $resource->is_favourite ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-600 hover:text-yellow-400' }} transition">★</button>
                                 </form>
                             </div>
-                            <h3 class="font-semibold text-sm text-gray-900 dark:text-gray-100 line-clamp-1">{{ $resource->title }}</h3>
+                            <h3 class="font-semibold text-sm text-slate-900 dark:text-slate-100 line-clamp-1">{{ $resource->title }}</h3>
                             @if ($resource->description)
-                                <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">{{ $resource->description }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1">{{ $resource->description }}</p>
                             @endif
                             @if ($resource->topic)
-                                <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-2">{{ $resource->topic->title }}</p>
+                                <p class="text-xs text-cyan-600 dark:text-cyan-400 mt-2">{{ $resource->topic->title }}</p>
                             @endif
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/50">
+                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60">
                                 @if ($resource->url)
                                     <a href="{{ $resource->url }}" target="_blank" class="link text-xs">Open link →</a>
                                 @else
@@ -81,8 +81,8 @@
                     </div>
                 @empty
                     <div class="col-span-full empty-state">
-                        <p class="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">No resources saved</p>
-                        <p class="text-sm text-gray-500 mb-4">Save links, articles, and study materials.</p>
+                        <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No resources saved</p>
+                        <p class="text-sm text-slate-500 mb-4">Save links, articles, and study materials.</p>
                     </div>
                 @endforelse
             </div>
@@ -96,7 +96,7 @@
     <x-modal name="resource-modal" focusable>
         <form method="POST" action="{{ route('resources.store') }}" class="p-6 space-y-4">
             @csrf
-            <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Add Resource</h3>
+            <h3 class="font-semibold text-lg text-slate-900 dark:text-slate-100">Add Resource</h3>
             <div>
                 <x-input-label for="rtitle">Title</x-input-label>
                 <input type="text" name="title" id="rtitle" required class="input">

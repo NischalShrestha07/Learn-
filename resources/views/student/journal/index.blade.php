@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Reflection Journal</h2>
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Reflection Journal</h2>
                 @if ($streak > 0)
                     <p class="text-xs text-orange-600 dark:text-orange-400 mt-0.5">🔥 {{ $streak }} day streak!</p>
                 @endif
@@ -17,7 +17,7 @@
             <div class="card p-4">
                 <form method="GET" class="flex gap-3 items-end">
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Month</label>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Month</label>
                         <input type="month" name="month" value="{{ request('month', now()->format('Y-m')) }}" class="input text-sm">
                     </div>
                     <button type="submit" class="btn-secondary text-sm">Filter</button>
@@ -31,9 +31,9 @@
                 <div class="card p-6">
                     <div class="flex items-start justify-between mb-3">
                         <div>
-                            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $entry->date->format('l, F j, Y') }}</p>
+                            <p class="text-sm font-medium text-slate-900 dark:text-slate-100">{{ $entry->date->format('l, F j, Y') }}</p>
                             @if ($entry->prompt)
-                                <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">{{ $entry->prompt }}</p>
+                                <p class="text-xs text-cyan-600 dark:text-cyan-400 mt-0.5">{{ $entry->prompt }}</p>
                             @endif
                         </div>
                         <div class="flex items-center gap-3">
@@ -60,8 +60,8 @@
                 </div>
             @empty
                 <div class="empty-state">
-                    <p class="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">No journal entries yet</p>
-                    <p class="text-sm text-gray-500">Reflect on your learning journey.</p>
+                    <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No journal entries yet</p>
+                    <p class="text-sm text-slate-500">Reflect on your learning journey.</p>
                 </div>
             @endforelse
 
@@ -74,7 +74,7 @@
     <x-modal name="journal-modal" focusable>
         <form method="POST" action="{{ route('journal.store') }}" class="p-6 space-y-4">
             @csrf
-            <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">New Journal Entry</h3>
+            <h3 class="font-semibold text-lg text-slate-900 dark:text-slate-100">New Journal Entry</h3>
             <div>
                 <x-input-label for="jdate">Date</x-input-label>
                 <input type="date" name="date" id="jdate" value="{{ old('date', now()->format('Y-m-d')) }}" required class="input">
@@ -85,7 +85,7 @@
                     @foreach ([1 => '😞', 2 => '😕', 3 => '😐', 4 => '😊', 5 => '🎉'] as $val => $emoji)
                         <label class="flex flex-col items-center cursor-pointer">
                             <input type="radio" name="mood" value="{{ $val }}" class="sr-only peer">
-                            <span class="text-2xl peer-checked:ring-2 peer-checked:ring-indigo-500 rounded-full p-1 transition">{{ $emoji }}</span>
+                            <span class="text-2xl peer-checked:ring-2 peer-checked:ring-cyan-500 rounded-full p-1 transition">{{ $emoji }}</span>
                         </label>
                     @endforeach
                 </div>
@@ -102,7 +102,7 @@
             <div>
                 <x-input-label for="jcontent">What's on your mind?</x-input-label>
                 <textarea name="content" id="jcontent" rows="8" required class="input font-mono">{{ old('content') }}</textarea>
-                <p class="text-xs text-gray-500 mt-1">Supports Markdown</p>
+                <p class="text-xs text-slate-500 mt-1">Supports Markdown</p>
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" @click="$dispatch('close-modal', 'journal-modal')" class="btn-secondary text-sm">Cancel</button>

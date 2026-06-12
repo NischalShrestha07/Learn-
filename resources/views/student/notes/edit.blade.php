@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Edit Note</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Edit Note</h2>
             <a href="{{ route('notes.show', $note) }}" class="btn-ghost text-sm">Cancel</a>
         </div>
     </x-slot>
@@ -20,7 +20,7 @@
                     <div>
                         <x-input-label for="content">Content</x-input-label>
                         <textarea name="content" id="content" rows="15" required class="input font-mono">{{ old('content', $note->content) }}</textarea>
-                        <p class="text-xs text-gray-500 mt-1">Supports Markdown</p>
+                        <p class="text-xs text-slate-500 mt-1">Supports Markdown</p>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -45,8 +45,8 @@
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <input type="checkbox" name="is_public" id="is_public" value="1" @checked(old('is_public', $note->is_public)) class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500">
-                        <label for="is_public" class="text-sm text-gray-600 dark:text-gray-400">Make public</label>
+                        <input type="checkbox" name="is_public" id="is_public" value="1" @checked(old('is_public', $note->is_public)) class="rounded border-slate-300 dark:border-slate-600 text-cyan-600 focus:ring-cyan-500">
+                        <label for="is_public" class="text-sm text-slate-600 dark:text-slate-400">Make public</label>
                     </div>
 
                     <div class="flex justify-end gap-3 pt-2">

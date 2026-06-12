@@ -1,7 +1,7 @@
 <section>
     <header>
-        <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ __('Profile Information') }}</h2>
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __("Update your account's profile information.") }}</p>
+        <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ __('Profile Information') }}</h2>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ __("Update your account's profile information.") }}</p>
     </header>
 
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-4">

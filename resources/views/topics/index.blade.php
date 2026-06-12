@@ -1,35 +1,59 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">My Topics</h2>
-            <a href="{{ route('topics.create') }}" class="btn-primary text-sm">+ New Topic</a>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <span class="eyebrow">Learning library</span>
+                <h2 class="mt-3 text-2xl font-bold text-slate-950">My Topics</h2>
+                <p class="mt-1 text-sm text-slate-500">Organize subjects into clear learning tracks you can revisit and grow.</p>
+            </div>
+            <a href="{{ route('topics.create') }}" class="btn-primary text-sm">Create topic</a>
         </div>
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mb-6 grid gap-4 sm:grid-cols-3">
+                <div class="metric-card">
+                    <p class="section-title">Total topics</p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $topics->total() }}</p>
+                </div>
+                <div class="metric-card">
+                    <p class="section-title">This page</p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $topics->count() }}</p>
+                </div>
+                <div class="metric-card">
+                    <p class="section-title">Recent cadence</p>
+                    <p class="mt-3 text-lg font-bold text-slate-950">{{ $topics->count() ? 'Keep building consistently' : 'Start your first learning track' }}</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 @forelse ($topics as $topic)
-                    <div class="card hover:shadow-md transition group">
-                        <a href="{{ route('topics.show', $topic) }}" class="block p-5">
-                            <div class="flex items-start justify-between mb-2">
-                                <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ $topic->title }}</h3>
-                                <span class="text-xs text-gray-400">{{ $topic->created_at->format('M d') }}</span>
+                    <div class="card transition hover:-translate-y-0.5 hover:shadow-[0_22px_50px_-30px_rgba(8,47,73,0.38)]">
+                        <a href="{{ route('topics.show', $topic) }}" class="block p-6">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <p class="section-title">Topic</p>
+                                    <h3 class="mt-2 text-xl font-bold text-slate-950">{{ $topic->title }}</h3>
+                                </div>
+                                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">{{ $topic->created_at->format('M d') }}</span>
                             </div>
                             @if ($topic->description)
-                                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">{{ $topic->description }}</p>
+                                <p class="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">{{ $topic->description }}</p>
+                            @else
+                                <p class="mt-4 text-sm leading-6 text-slate-400">No description yet. Add one to define the scope of this topic.</p>
                             @endif
-                            <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <div class="mt-5 flex items-center justify-between border-t border-slate-200/80 pt-4 text-xs text-slate-500">
                                 <span>{{ $topic->sections_count }} {{ Str::plural('section', $topic->sections_count) }}</span>
-                                <span>{{ $topic->learning_sessions_count }} sessions</span>
+                                <span>{{ $topic->learning_sessions_count }} {{ Str::plural('session', $topic->learning_sessions_count) }}</span>
                             </div>
                         </a>
                     </div>
                 @empty
-                    <div class="col-span-full empty-state">
-                        <p class="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">No topics yet</p>
-                        <p class="text-sm text-gray-500 mb-4">Create your first learning topic to get started.</p>
-                        <a href="{{ route('topics.create') }}" class="btn-primary text-sm">Create a topic</a>
+                    <div class="empty-state col-span-full">
+                        <p class="text-base font-semibold text-slate-950">No topics yet</p>
+                        <p class="mt-1 text-sm text-slate-500">Create your first learning topic to start building your study map.</p>
+                        <a href="{{ route('topics.create') }}" class="btn-primary mt-5 text-sm">Create a topic</a>
                     </div>
                 @endforelse
             </div>

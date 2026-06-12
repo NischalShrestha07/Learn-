@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
         {{ __('This is a secure area. Please confirm your password before continuing.') }}
     </p>
 

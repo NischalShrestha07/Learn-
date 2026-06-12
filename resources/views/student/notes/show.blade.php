@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $note->title }}</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ $note->title }}</h2>
             <div class="flex gap-2">
                 <a href="{{ route('notes.edit', $note) }}" class="btn-ghost text-sm">Edit</a>
                 <a href="{{ route('notes.index') }}" class="btn-ghost text-sm">Back</a>
@@ -12,7 +12,7 @@
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
             <div class="card p-8">
-                <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
+                <div class="flex items-center gap-2 text-xs text-slate-500 mb-4">
                     <span>{{ $note->created_at->format('M d, Y g:i A') }}</span>
                     @if ($note->topic)
                         <span>&middot;</span>

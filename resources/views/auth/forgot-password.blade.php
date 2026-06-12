@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link.') }}
     </p>
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Edit Topic</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Edit Topic</h2>
             <a href="{{ route('topics.show', $topic) }}" class="btn-ghost text-sm">Back</a>
         </div>
     </x-slot>
@@ -36,7 +36,7 @@
                     </div>
                 </form>
 
-                <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700/50">
+                <div class="mt-8 pt-6 border-t border-slate-200/70 dark:border-slate-700/60">
                     <form method="POST" action="{{ route('topics.destroy', $topic) }}"
                         onsubmit="return confirm('Delete this topic and all its content?')">
                         @csrf @method('DELETE')

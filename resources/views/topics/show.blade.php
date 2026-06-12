@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $topic->title }}</h2>
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ $topic->title }}</h2>
                 @if ($topic->description)
-                    <p class="text-sm text-gray-500 mt-0.5">{{ $topic->description }}</p>
+                    <p class="text-sm text-slate-500 mt-0.5">{{ $topic->description }}</p>
                 @endif
             </div>
             <div class="flex gap-2">
@@ -20,11 +20,11 @@
             {{-- Sections --}}
             @if ($topic->sections->isNotEmpty())
                 <div x-data="{ active: 0 }">
-                    <div class="flex gap-1 mb-6 overflow-x-auto pb-1 border-b border-gray-200 dark:border-gray-700/50">
+                    <div class="flex gap-1 mb-6 overflow-x-auto pb-1 border-b border-slate-200/70 dark:border-slate-700/60">
                         @foreach ($topic->sections as $i => $section)
                             <button
                                 @click="active = {{ $i }}"
-                                :class="active === {{ $i }} ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                                :class="active === {{ $i }} ? 'border-cyan-600 text-cyan-600 dark:text-cyan-400 dark:border-cyan-400' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'"
                                 class="shrink-0 px-4 py-2 text-sm font-medium border-b-2 capitalize transition"
                             >
                                 {{ $section->type }}
@@ -35,7 +35,7 @@
                     @foreach ($topic->sections as $i => $section)
                         <div x-show="active === {{ $i }}" class="card p-6 prose-custom">
                             {!! Str::of($section->content)->markdown() !!}
-                            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/50 flex gap-2">
+                            <div class="mt-4 pt-4 border-t border-slate-200/70 dark:border-slate-700/60 flex gap-2">
                                 <form method="POST" action="{{ route('sections.destroy', [$topic, $section]) }}" onsubmit="return confirm('Delete this section?')">
                                     @csrf @method('DELETE')
                                     <button class="text-xs text-red-600 hover:underline">Delete</button>
@@ -46,19 +46,19 @@
                 </div>
             @else
                 <div class="empty-state">
-                    <p class="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">No content yet</p>
-                    <p class="text-sm text-gray-500">Add your first section below.</p>
+                    <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No content yet</p>
+                    <p class="text-sm text-slate-500">Add your first section below.</p>
                 </div>
             @endif
 
             {{-- Add Section Form --}}
             <div class="card p-6">
-                <h3 class="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-3">Add Section</h3>
+                <h3 class="font-semibold text-sm text-slate-900 dark:text-slate-100 mb-3">Add Section</h3>
                 <form method="POST" action="{{ route('sections.store', $topic) }}" class="space-y-3">
                     @csrf
                     <div class="grid grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Type</label>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">Type</label>
                             <select name="type" class="input text-xs">
                                 <option value="overview">Overview</option>
                                 <option value="notes">Notes</option>
@@ -69,12 +69,12 @@
                             </select>
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Custom Type Label</label>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">Custom Type Label</label>
                             <input type="text" name="custom_type" placeholder="e.g. Key Terms, Formulas" class="input text-xs">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Content (Markdown)</label>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Content (Markdown)</label>
                         <textarea name="content" rows="6" required class="input font-mono text-xs" placeholder="Write your content in Markdown..."></textarea>
                     </div>
                     <button type="submit" class="btn-primary text-sm">Add Section</button>
@@ -83,7 +83,7 @@
 
             {{-- End session --}}
             <div class="flex justify-end">
-                <button onclick="endSession()" class="btn-ghost text-sm border border-gray-200 dark:border-gray-700">
+                <button onclick="endSession()" class="btn-ghost text-sm border border-slate-200/70 dark:border-slate-700/60">
                     Done studying
                 </button>
             </div>

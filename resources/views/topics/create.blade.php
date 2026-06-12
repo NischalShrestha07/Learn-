@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">New Topic</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">New Topic</h2>
             <a href="{{ route('topics.index') }}" class="btn-ghost text-sm">Back</a>
         </div>
     </x-slot>

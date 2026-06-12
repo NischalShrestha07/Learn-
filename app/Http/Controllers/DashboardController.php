@@ -50,10 +50,31 @@ class DashboardController extends Controller
 
         $bookmarkedTopics = $user->bookmarks()->with('topic')->latest()->take(5)->get();
 
+        // New features
+        $pendingAssignments = $user->assignments()->whereIn('status', ['pending', 'returned'])->count();
+        $upcomingExams = $user->exams()->where('status', 'upcoming')->whereDate('exam_date', '>=', today())->count();
+        $dueAssignments = $user->assignments()->whereIn('status', ['pending', 'returned'])->orderBy('due_date')->take(5)->get();
+        $nextExams = $user->exams()->where('status', 'upcoming')->whereDate('exam_date', '>=', today())->orderBy('exam_date')->take(5)->get();
+        $pendingTodos = $user->todos()->where('is_completed', false)->orderBy('due_date')->take(8)->get();
+        $todayHabits = $user->habits()->where('is_active', true)->with(['logs' => fn($q) => $q->where('log_date', today())])->get();
+        $habitStreak = $user->habits()->where('is_active', true)->count();
+        $achievementCount = $user->achievements()->count();
+        $cgpa = $user->grades()->whereNotNull('grade_points')->get();
+        $totalCredits = 0;
+        $totalPoints = 0;
+        foreach ($cgpa as $g) {
+            $totalPoints += $g->grade_points * $g->credits;
+            $totalCredits += $g->credits;
+        }
+        $cgpaValue = $totalCredits > 0 ? round($totalPoints / $totalCredits, 2) : null;
+
         return view('dashboard', compact(
             'recentSessions', 'weeklySeconds', 'topicCount', 'noteCount', 'deckCount',
             'recentNotes', 'recentTopics', 'todayFocusMinutes', 'activeGoals',
             'todaySessions', 'progressCounts', 'bookmarkedTopics',
+            'pendingAssignments', 'upcomingExams', 'dueAssignments', 'nextExams',
+            'pendingTodos', 'todayHabits', 'habitStreak', 'achievementCount',
+            'cgpaValue',
         ));
     }
 }

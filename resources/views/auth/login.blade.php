@@ -18,8 +18,8 @@
 
         <div class="flex items-center justify-between">
             <label for="remember_me" class="flex items-center gap-2">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500" name="remember">
-                <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+                <input id="remember_me" type="checkbox" class="rounded border-slate-200 dark:border-slate-700 text-cyan-600 focus:ring-cyan-500" name="remember">
+                <span class="text-sm text-slate-600 dark:text-slate-400">{{ __('Remember me') }}</span>
             </label>
             @if (Route::has('password.request'))
                 <a class="link" href="{{ route('password.request') }}">{{ __('Forgot password?') }}</a>
@@ -28,7 +28,7 @@
 
         <x-primary-button class="w-full justify-center">{{ __('Log in') }}</x-primary-button>
 
-        <p class="text-center text-sm text-gray-500">
+        <p class="text-center text-sm text-slate-500">
             {{ __("Don't have an account?") }}
             <a href="{{ route('register') }}" class="link">Sign up</a>
         </p>

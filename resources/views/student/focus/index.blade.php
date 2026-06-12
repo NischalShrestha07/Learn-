@@ -1,65 +1,63 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Focus Timer</h2>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <span class="eyebrow">Attention management</span>
+                <h2 class="mt-3 text-2xl font-bold text-slate-950">Focus Timer</h2>
+                <p class="mt-1 text-sm text-slate-500">Use a simple rhythm for deep work, then log the session so your focus becomes measurable.</p>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="card p-5">
-                    <p class="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">Today</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $todayMinutes }} <span class="text-sm font-normal text-gray-500">min</span></p>
+        <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div class="metric-card">
+                    <p class="section-title">Today</p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $todayMinutes }} <span class="text-base font-medium text-slate-500">min</span></p>
                 </div>
-                <div class="card p-5">
-                    <p class="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">This Week</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $thisWeekMinutes }} <span class="text-sm font-normal text-gray-500">min</span></p>
+                <div class="metric-card">
+                    <p class="section-title">This week</p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $thisWeekMinutes }} <span class="text-base font-medium text-slate-500">min</span></p>
                 </div>
-                <div class="card p-5">
-                    <p class="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">All Time</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $totalMinutes }} <span class="text-sm font-normal text-gray-500">min</span></p>
+                <div class="metric-card">
+                    <p class="section-title">All time</p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $totalMinutes }} <span class="text-base font-medium text-slate-500">min</span></p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                 <div class="card p-8">
                     <div x-data="pomodoroTimer()" class="text-center">
-                        <div class="text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6" x-text="display"></div>
+                        <p class="section-title">Pomodoro</p>
+                        <div class="mt-4 text-6xl font-bold text-slate-950" x-text="display"></div>
 
-                        <div class="flex justify-center gap-3 mb-6">
-                            <button @click="setMode('focus')"
-                                class="px-4 py-2 rounded-lg text-sm font-medium transition"
-                                :class="mode === 'focus' ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'">
+                        <div class="mt-8 flex justify-center gap-3">
+                            <button @click="setMode('focus')" class="rounded-2xl px-4 py-2 text-sm font-semibold transition" :class="mode === 'focus' ? 'bg-cyan-700 text-white' : 'bg-slate-100 text-slate-600'">
                                 Focus
                             </button>
-                            <button @click="setMode('break')"
-                                class="px-4 py-2 rounded-lg text-sm font-medium transition"
-                                :class="mode === 'break' ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'">
+                            <button @click="setMode('break')" class="rounded-2xl px-4 py-2 text-sm font-semibold transition" :class="mode === 'break' ? 'bg-green-600 text-white' : 'bg-slate-100 text-slate-600'">
                                 Break
                             </button>
                         </div>
 
-                        <div class="flex justify-center gap-3">
-                            <button @click="toggle()"
-                                class="px-8 py-3 rounded-lg text-sm font-medium transition"
-                                :class="running ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-indigo-600 text-white hover:bg-indigo-700'"
-                                x-text="running ? 'Stop' : 'Start'">
+                        <div class="mt-8 flex justify-center gap-3">
+                            <button @click="toggle()" class="rounded-2xl px-8 py-3 text-sm font-semibold text-white transition" :class="running ? 'bg-red-600 hover:bg-red-700' : 'bg-cyan-700 hover:bg-cyan-800'" x-text="running ? 'Stop' : 'Start'">
                             </button>
                             <button @click="reset()" class="btn-secondary text-sm">Reset</button>
                         </div>
 
-                        <div class="text-xs text-gray-500 mt-4">
-                            <span x-show="mode === 'focus'">Focus: 25min · Break: 5min</span>
-                            <span x-show="mode === 'break'">Break time!</span>
+                        <div class="mt-5 text-xs text-slate-500">
+                            <span x-show="mode === 'focus'">Focus: 25 min · Break: 5 min</span>
+                            <span x-show="mode === 'break'">Break mode is active.</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="card p-6">
-                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">Log Focus Session</h3>
-                    <form method="POST" action="{{ route('focus.sessions.store') }}" class="space-y-4">
+                    <p class="section-title">Manual log</p>
+                    <h3 class="mt-2 text-xl font-bold text-slate-950">Save a completed focus session</h3>
+                    <form method="POST" action="{{ route('focus.sessions.store') }}" class="mt-5 space-y-4">
                         @csrf
                         <div class="grid grid-cols-2 gap-3">
                             <div>
@@ -82,32 +80,35 @@
                         </div>
                         <div>
                             <x-input-label for="fnotes">Notes</x-input-label>
-                            <input type="text" name="notes" id="fnotes" class="input">
+                            <input type="text" name="notes" id="fnotes" class="input" placeholder="What did you work on?">
                         </div>
-                        <button type="submit" class="btn-primary text-sm">Log Session</button>
+                        <button type="submit" class="btn-primary text-sm">Log session</button>
                     </form>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header flex items-center justify-between">
-                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm">Recent Sessions</h3>
+                    <div>
+                        <p class="section-title">History</p>
+                        <h3 class="mt-1 text-lg font-bold text-slate-950">Recent focus sessions</h3>
+                    </div>
                     <a href="{{ route('focus.history') }}" class="link">View all</a>
                 </div>
-                <div class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                <div class="divide-y divide-slate-200/70">
                     @forelse ($history as $session)
-                        <div class="px-6 py-3.5 flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-4 px-6 py-4">
                             <div>
-                                <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $session->notes ?: 'Focus session' }}</p>
-                                <p class="text-xs text-gray-500">
+                                <p class="text-sm font-semibold text-slate-900">{{ $session->notes ?: 'Focus session' }}</p>
+                                <p class="text-xs text-slate-500">
                                     {{ $session->completed_at->format('M d, g:i A') }}
                                     @if ($session->topic) · {{ $session->topic->title }} @endif
                                 </p>
                             </div>
-                            <span class="text-sm text-gray-500 font-medium">{{ $session->duration_minutes }} min</span>
+                            <span class="text-sm font-semibold text-slate-500">{{ $session->duration_minutes }} min</span>
                         </div>
                     @empty
-                        <div class="px-6 py-8 text-center text-sm text-gray-500">No focus sessions yet.</div>
+                        <div class="px-6 py-8 text-center text-sm text-slate-500">No focus sessions yet.</div>
                     @endforelse
                 </div>
             </div>
@@ -130,7 +131,10 @@
 
                 setMode(mode) {
                     this.running = false;
-                    if (this.interval) { clearInterval(this.interval); this.interval = null; }
+                    if (this.interval) {
+                        clearInterval(this.interval);
+                        this.interval = null;
+                    }
                     this.mode = mode;
                     this.minutes = mode === 'focus' ? 25 : 5;
                     this.seconds = 0;

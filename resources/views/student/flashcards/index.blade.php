@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Flashcards</h2>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Flashcards</h2>
             <a href="{{ route('flashcards.create') }}" class="btn-primary text-sm">+ New Deck</a>
         </div>
     </x-slot>
@@ -13,11 +13,11 @@
                     <div class="card hover:shadow-md transition">
                         <a href="{{ route('flashcards.show', $deck) }}" class="block p-5">
                             <div class="flex items-start justify-between mb-3">
-                                <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ $deck->title }}</h3>
+                                <h3 class="font-semibold text-slate-900 dark:text-slate-100">{{ $deck->title }}</h3>
                                 <span class="badge-gray text-xs">{{ $deck->flashcards_count }} cards</span>
                             </div>
                             @if ($deck->description)
-                                <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">{{ $deck->description }}</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-3">{{ $deck->description }}</p>
                             @endif
                             <div class="flex items-center justify-between text-xs">
                                 @php
@@ -28,14 +28,14 @@
                                 @else
                                     <span class="text-green-600 dark:text-green-400 font-medium">All reviewed</span>
                                 @endif
-                                <span class="text-gray-400">{{ $deck->created_at->diffForHumans() }}</span>
+                                <span class="text-slate-400">{{ $deck->created_at->diffForHumans() }}</span>
                             </div>
                         </a>
                     </div>
                 @empty
                     <div class="col-span-full empty-state">
-                        <p class="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">No flashcard decks yet</p>
-                        <p class="text-sm text-gray-500 mb-4">Create a deck to start studying with flashcards.</p>
+                        <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No flashcard decks yet</p>
+                        <p class="text-sm text-slate-500 mb-4">Create a deck to start studying with flashcards.</p>
                         <a href="{{ route('flashcards.create') }}" class="btn-primary text-sm">Create your first deck</a>
                     </div>
                 @endforelse
