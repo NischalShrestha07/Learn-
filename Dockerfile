@@ -1,16 +1,3 @@
-FROM composer:2 AS composer_deps
-
-WORKDIR /app
-
-COPY composer.json composer.lock ./
-RUN composer install \
-    --no-dev \
-    --no-interaction \
-    --no-progress \
-    --no-scripts \
-    --prefer-dist \
-    --optimize-autoloader
-
 FROM node:20-bookworm-slim AS frontend_assets
 
 WORKDIR /app
@@ -26,6 +13,8 @@ RUN npm run build
 FROM php:8.3-fpm
 
 WORKDIR /var/www
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -58,7 +47,13 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
-COPY --from=composer_deps /app/vendor ./vendor
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --no-scripts \
+    --prefer-dist \
+    --optimize-autoloader
 COPY --from=frontend_assets /app/public/build ./public/build
 
 COPY docker/nginx.conf /etc/nginx/templates/default.conf.template
