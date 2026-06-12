@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['user_id', 'topic_id', 'status', 'completion_percentage', 'last_studied_at'])]
 class TopicProgress extends Model
 {
+    protected $table = 'topic_progress';
+
     protected function casts(): array
     {
         return [
