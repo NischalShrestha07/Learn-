@@ -17,7 +17,7 @@
             <div class="card p-4">
                 <form method="GET" class="flex gap-3 items-end">
                     <div>
-                        <label class="block text-xs font-medium text-slate-500 mb-1">Month</label>
+                        <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Month</label>
                         <input type="month" name="month" value="{{ request('month', now()->format('Y-m')) }}" class="input text-sm">
                     </div>
                     <button type="submit" class="btn-secondary text-sm">Filter</button>
@@ -50,7 +50,7 @@
                             @endif
                             <form method="POST" action="{{ route('journal.destroy', $entry) }}" onsubmit="return confirm('Delete this entry?')">
                                 @csrf @method('DELETE')
-                                <button class="text-xs text-red-600 hover:underline">Delete</button>
+                                <button class="text-xs text-red-600 dark:text-red-400 hover:underline">Delete</button>
                             </form>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
             @empty
                 <div class="empty-state">
                     <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No journal entries yet</p>
-                    <p class="text-sm text-slate-500">Reflect on your learning journey.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Reflect on your learning journey.</p>
                 </div>
             @endforelse
 
@@ -102,7 +102,7 @@
             <div>
                 <x-input-label for="jcontent">What's on your mind?</x-input-label>
                 <textarea name="content" id="jcontent" rows="8" required class="input font-mono">{{ old('content') }}</textarea>
-                <p class="text-xs text-slate-500 mt-1">Supports Markdown</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Supports Markdown</p>
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" @click="$dispatch('close-modal', 'journal-modal')" class="btn-secondary text-sm">Cancel</button>

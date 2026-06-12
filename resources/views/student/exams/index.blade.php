@@ -26,7 +26,7 @@
                                     <h4 class="font-semibold text-slate-900 dark:text-slate-100">{{ $exam->title }}</h4>
                                     @if ($daysLeft >= 0)
                                         <span class="text-xs font-bold {{ $daysLeft <= 1 ? 'text-red-500' : 'text-cyan-500' }} shrink-0 ml-2">
-                                            {{ $daysLeft == 0 ? 'Today!' : $daysLeft == 1 ? 'Tomorrow' : $daysLeft . ' days' }}
+                                            {{ $daysLeft == 0 ? 'Today!' : ($daysLeft == 1 ? 'Tomorrow' : $daysLeft . ' days') }}
                                         </span>
                                     @endif
                                 </div>

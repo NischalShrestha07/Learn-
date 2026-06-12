@@ -9,7 +9,7 @@
             @if($progress->isEmpty())
                 <div class="empty-state">
                     <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No progress tracked yet</p>
-                    <p class="text-sm text-slate-500 mb-4">Start learning to see your progress.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Start learning to see your progress.</p>
                     <a href="{{ route('topics.index') }}" class="btn-primary text-sm">Browse your topics</a>
                 </div>
             @else
@@ -22,7 +22,7 @@
                                         {{ $record->topic->title }}
                                     </a>
                                     @if($record->last_studied_at)
-                                        <p class="text-xs text-slate-500 mt-0.5">Last studied {{ $record->last_studied_at->diffForHumans() }}</p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Last studied {{ $record->last_studied_at->diffForHumans() }}</p>
                                     @endif
                                 </div>
                                 <span class="text-sm font-medium
@@ -33,7 +33,7 @@
                             <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                                 <div class="bg-cyan-600 dark:bg-cyan-500 h-2 rounded-full transition-all" style="width: {{ $record->completion_percentage }}%"></div>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1.5">{{ $record->completion_percentage }}% complete</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5">{{ $record->completion_percentage }}% complete</p>
                         </div>
                     @endforeach
                 </div>

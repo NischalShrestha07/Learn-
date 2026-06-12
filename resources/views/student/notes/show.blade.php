@@ -12,7 +12,7 @@
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
             <div class="card p-8">
-                <div class="flex items-center gap-2 text-xs text-slate-500 mb-4">
+                <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-4">
                     <span>{{ $note->created_at->format('M d, Y g:i A') }}</span>
                     @if ($note->topic)
                         <span>&middot;</span>
@@ -26,7 +26,7 @@
                 @if ($note->tags->isNotEmpty())
                     <div class="flex gap-2 mb-6">
                         @foreach ($note->tags as $tag)
-                            <span class="text-xs px-2 py-0.5 rounded-full" style="background-color: {{ $tag->color ?? '#e5e7eb' }}20; color: {{ $tag->color ?? '#374151' }}">{{ $tag->name }}</span>
+                            <span class="rounded-full border border-slate-200/60 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:border-slate-600/60 dark:bg-slate-700 dark:text-slate-300">{{ $tag->name }}</span>
                         @endforeach
                     </div>
                 @endif
@@ -40,7 +40,7 @@
                 <a href="{{ route('notes.edit', $note) }}" class="link">Edit note</a>
                 <form method="POST" action="{{ route('notes.destroy', $note) }}" onsubmit="return confirm('Delete this note?')">
                     @csrf @method('DELETE')
-                    <button type="submit" class="text-sm text-red-600 hover:underline">Delete</button>
+                    <button type="submit" class="text-sm text-red-600 dark:text-red-400 hover:underline">Delete</button>
                 </form>
             </div>
         </div>

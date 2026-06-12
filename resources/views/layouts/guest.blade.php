@@ -27,7 +27,7 @@
                         </svg>
                     </button>
                 </div>
-                <p class="mt-2 text-sm text-slate-500">A calmer way to learn, plan, and stay consistent.</p>
+                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">A calmer way to learn, plan, and stay consistent.</p>
             </div>
             <div class="card p-6">
                 {{ $slot }}

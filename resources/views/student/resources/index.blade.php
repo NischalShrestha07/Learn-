@@ -52,7 +52,7 @@
                                     @elseif($resource->type === 'video') bg-cyan-100 dark:bg-cyan-900/40 text-cyan-800 dark:text-cyan-300
                                     @elseif($resource->type === 'book') bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300
                                     @elseif($resource->type === 'article') bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300
-                                    @else bg-slate-100 dark:bg-slate-700 text-slate-500 @endif
+                                    @else bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 @endif
                                 ">{{ ucfirst($resource->type) }}</span>
                                 <form method="POST" action="{{ route('resources.favourite', $resource) }}">
                                     @csrf @method('PATCH')
@@ -74,7 +74,7 @@
                                 @endif
                                 <form method="POST" action="{{ route('resources.destroy', $resource) }}" onsubmit="return confirm('Delete this resource?')">
                                     @csrf @method('DELETE')
-                                    <button class="text-xs text-red-600 hover:underline">Delete</button>
+                                    <button class="text-xs text-red-600 dark:text-red-400 hover:underline">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                 @empty
                     <div class="col-span-full empty-state">
                         <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No resources saved</p>
-                        <p class="text-sm text-slate-500 mb-4">Save links, articles, and study materials.</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Save links, articles, and study materials.</p>
                     </div>
                 @endforelse
             </div>

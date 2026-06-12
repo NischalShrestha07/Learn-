@@ -4,7 +4,7 @@
             <div>
                 <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ $topic->title }}</h2>
                 @if ($topic->description)
-                    <p class="text-sm text-slate-500 mt-0.5">{{ $topic->description }}</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{{ $topic->description }}</p>
                 @endif
             </div>
             <div class="flex gap-2">
@@ -38,7 +38,7 @@
                             <div class="mt-4 pt-4 border-t border-slate-200/70 dark:border-slate-700/60 flex gap-2">
                                 <form method="POST" action="{{ route('sections.destroy', [$topic, $section]) }}" onsubmit="return confirm('Delete this section?')">
                                     @csrf @method('DELETE')
-                                    <button class="text-xs text-red-600 hover:underline">Delete</button>
+                                    <button class="text-xs text-red-600 dark:text-red-400 hover:underline">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
             @else
                 <div class="empty-state">
                     <p class="text-base font-medium text-slate-900 dark:text-slate-100 mb-1">No content yet</p>
-                    <p class="text-sm text-slate-500">Add your first section below.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Add your first section below.</p>
                 </div>
             @endif
 
@@ -58,7 +58,7 @@
                     @csrf
                     <div class="grid grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Type</label>
+                            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Type</label>
                             <select name="type" class="input text-xs">
                                 <option value="overview">Overview</option>
                                 <option value="notes">Notes</option>
@@ -69,12 +69,12 @@
                             </select>
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Custom Type Label</label>
+                            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Custom Type Label</label>
                             <input type="text" name="custom_type" placeholder="e.g. Key Terms, Formulas" class="input text-xs">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-500 mb-1">Content (Markdown)</label>
+                        <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Content (Markdown)</label>
                         <textarea name="content" rows="6" required class="input font-mono text-xs" placeholder="Write your content in Markdown..."></textarea>
                     </div>
                     <button type="submit" class="btn-primary text-sm">Add Section</button>

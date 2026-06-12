@@ -22,6 +22,6 @@ class FlashcardDeck extends Model
 
     public function flashcards(): HasMany
     {
-        return $this->hasMany(Flashcard::class);
+        return $this->hasMany(Flashcard::class, 'deck_id');
     }
 }

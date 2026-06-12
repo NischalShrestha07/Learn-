@@ -28,7 +28,7 @@
 
         <x-primary-button class="w-full justify-center">{{ __('Log in') }}</x-primary-button>
 
-        <p class="text-center text-sm text-slate-500">
+        <p class="text-center text-sm text-slate-500 dark:text-slate-400">
             {{ __("Don't have an account?") }}
             <a href="{{ route('register') }}" class="link">Sign up</a>
         </p>

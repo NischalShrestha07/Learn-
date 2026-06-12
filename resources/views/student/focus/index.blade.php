@@ -3,8 +3,8 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <span class="eyebrow">Attention management</span>
-                <h2 class="mt-3 text-2xl font-bold text-slate-950">Focus Timer</h2>
-                <p class="mt-1 text-sm text-slate-500">Use a simple rhythm for deep work, then log the session so your focus becomes measurable.</p>
+                <h2 class="mt-3 text-2xl font-bold text-slate-950 dark:text-slate-100">Focus Timer</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Use a simple rhythm for deep work, then log the session so your focus becomes measurable.</p>
             </div>
         </div>
     </x-slot>
@@ -14,15 +14,15 @@
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div class="metric-card">
                     <p class="section-title">Today</p>
-                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $todayMinutes }} <span class="text-base font-medium text-slate-500">min</span></p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950 dark:text-slate-100">{{ $todayMinutes }} <span class="text-base font-medium text-slate-500 dark:text-slate-400">min</span></p>
                 </div>
                 <div class="metric-card">
                     <p class="section-title">This week</p>
-                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $thisWeekMinutes }} <span class="text-base font-medium text-slate-500">min</span></p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950 dark:text-slate-100">{{ $thisWeekMinutes }} <span class="text-base font-medium text-slate-500 dark:text-slate-400">min</span></p>
                 </div>
                 <div class="metric-card">
                     <p class="section-title">All time</p>
-                    <p class="mt-3 text-3xl font-bold text-slate-950">{{ $totalMinutes }} <span class="text-base font-medium text-slate-500">min</span></p>
+                    <p class="mt-3 text-3xl font-bold text-slate-950 dark:text-slate-100">{{ $totalMinutes }} <span class="text-base font-medium text-slate-500 dark:text-slate-400">min</span></p>
                 </div>
             </div>
 
@@ -30,13 +30,13 @@
                 <div class="card p-8">
                     <div x-data="pomodoroTimer()" class="text-center">
                         <p class="section-title">Pomodoro</p>
-                        <div class="mt-4 text-6xl font-bold text-slate-950" x-text="display"></div>
+                        <div class="mt-4 text-6xl font-bold text-slate-950 dark:text-slate-100" x-text="display"></div>
 
                         <div class="mt-8 flex justify-center gap-3">
-                            <button @click="setMode('focus')" class="rounded-2xl px-4 py-2 text-sm font-semibold transition" :class="mode === 'focus' ? 'bg-cyan-700 text-white' : 'bg-slate-100 text-slate-600'">
+                            <button @click="setMode('focus')" class="rounded-2xl px-4 py-2 text-sm font-semibold transition" :class="mode === 'focus' ? 'bg-cyan-700 text-white' : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'">
                                 Focus
                             </button>
-                            <button @click="setMode('break')" class="rounded-2xl px-4 py-2 text-sm font-semibold transition" :class="mode === 'break' ? 'bg-green-600 text-white' : 'bg-slate-100 text-slate-600'">
+                            <button @click="setMode('break')" class="rounded-2xl px-4 py-2 text-sm font-semibold transition" :class="mode === 'break' ? 'bg-green-600 text-white' : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'">
                                 Break
                             </button>
                         </div>
@@ -47,7 +47,7 @@
                             <button @click="reset()" class="btn-secondary text-sm">Reset</button>
                         </div>
 
-                        <div class="mt-5 text-xs text-slate-500">
+                        <div class="mt-5 text-xs text-slate-500 dark:text-slate-400">
                             <span x-show="mode === 'focus'">Focus: 25 min · Break: 5 min</span>
                             <span x-show="mode === 'break'">Break mode is active.</span>
                         </div>
@@ -56,7 +56,7 @@
 
                 <div class="card p-6">
                     <p class="section-title">Manual log</p>
-                    <h3 class="mt-2 text-xl font-bold text-slate-950">Save a completed focus session</h3>
+                    <h3 class="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100">Save a completed focus session</h3>
                     <form method="POST" action="{{ route('focus.sessions.store') }}" class="mt-5 space-y-4">
                         @csrf
                         <div class="grid grid-cols-2 gap-3">
@@ -91,24 +91,24 @@
                 <div class="card-header flex items-center justify-between">
                     <div>
                         <p class="section-title">History</p>
-                        <h3 class="mt-1 text-lg font-bold text-slate-950">Recent focus sessions</h3>
+                        <h3 class="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">Recent focus sessions</h3>
                     </div>
                     <a href="{{ route('focus.history') }}" class="link">View all</a>
                 </div>
-                <div class="divide-y divide-slate-200/70">
+                <div class="divide-y divide-slate-200/70 dark:divide-slate-700/60">
                     @forelse ($history as $session)
                         <div class="flex items-center justify-between gap-4 px-6 py-4">
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">{{ $session->notes ?: 'Focus session' }}</p>
-                                <p class="text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ $session->notes ?: 'Focus session' }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">
                                     {{ $session->completed_at->format('M d, g:i A') }}
                                     @if ($session->topic) · {{ $session->topic->title }} @endif
                                 </p>
                             </div>
-                            <span class="text-sm font-semibold text-slate-500">{{ $session->duration_minutes }} min</span>
+                            <span class="text-sm font-semibold text-slate-500 dark:text-slate-400">{{ $session->duration_minutes }} min</span>
                         </div>
                     @empty
-                        <div class="px-6 py-8 text-center text-sm text-slate-500">No focus sessions yet.</div>
+                        <div class="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400">No focus sessions yet.</div>
                     @endforelse
                 </div>
             </div>

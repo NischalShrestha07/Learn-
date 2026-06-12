@@ -30,7 +30,7 @@
                         @php $daysLeft = now()->startOfDay()->diffInDays($exam->exam_date, false); @endphp
                         @if ($daysLeft >= 0)
                             <span class="text-sm font-semibold {{ $daysLeft <= 1 ? 'text-red-500' : 'text-cyan-600 dark:text-cyan-400' }}">
-                                {{ $daysLeft == 0 ? 'Today!' : $daysLeft == 1 ? 'Tomorrow' : $daysLeft . ' days away' }}
+                                {{ $daysLeft == 0 ? 'Today!' : ($daysLeft == 1 ? 'Tomorrow' : $daysLeft . ' days away') }}
                             </span>
                         @endif
                     @endif
